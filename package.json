@@ -19,6 +19,8 @@
   "homepage": "https://github.com/gnehsheng/Hansigjib-backend#readme",
   "description": "",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.2.9"
   }
 }
