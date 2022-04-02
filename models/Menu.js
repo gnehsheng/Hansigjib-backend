@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const menuSchema = new Schema({
-    img:
-    {
-        data: Buffer,
-        contentType: String
-    },
+    img: { type: String },
     name: { type: String },
     description: { type: String, },
     price: { type: Number },
