@@ -1,10 +1,10 @@
 require('dotenv').config()
 const express = require('express')
+const morgan = require("morgan");
 const cors = require('cors')
 const mongoose = require('mongoose')
 const UserController = require('./controllers/UserController')
 const MenuController = require('./controllers/MenuController')
-const morgan = require("morgan");
 const methodOverride = require("method-override");
 const session = require('express-session')
 
@@ -30,7 +30,7 @@ mongoose.connection.once("open", () => {
 app.use(morgan("tiny"))
 app.use(
     session({
-        secret: "iamsimon", //a random string do not copy this value or your stuff will get hacked
+        secret: process.env.SECRET, //a random string do not copy this value or your stuff will get hacked
         resave: false, // default more info: https://www.npmjs.com/package/express-session#resave
         saveUninitialized: false, // default  more info: https://www.npmjs.com/package/express-session#resave
     })
