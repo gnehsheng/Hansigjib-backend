@@ -2,25 +2,30 @@ const express = require("express");
 const User = require("../models/User");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const { Router } = require("express");
+const { Router, application } = require("express");
 const { reset } = require("nodemon");
 
 
 const saltRounds = 10;
+
 router.get("/seed", async (req, res) => {
     try {
         await User.deleteMany({})
         await User.create([
           {
-            username: "simon",
+            username: "admin",
             password: bcrypt.hashSync("12345", saltRounds),
           },
           {
-            username: "admin",
-            password: bcrypt.hashSync("88888", saltRounds),
+            username: "kitchen",
+            password: bcrypt.hashSync("12345", saltRounds),
+          },
+           {
+            username: "server",
+            password: bcrypt.hashSync("12345", saltRounds),
           },
         ]);
-        res.send("Seed")
+        res.send("Admin user seeded")
       } catch (error) {
           console.log(error);
       }
@@ -38,7 +43,7 @@ router.get("/secret", (req, res) => {
   
     res.send(user)
   } else {
-    res.send("no entry")
+    res.send("Sorry you have no access.")
   }
 })
 
