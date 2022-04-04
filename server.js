@@ -42,8 +42,8 @@ app.use(express.json());
 app.use("/user", UserController );
 app.use("/menu", MenuController );
 
-app.get('/', (req, res)=>{
-    res.send('HANSIGJIB')
+app.get('/', (req, res) =>{
+    res.send("HANSIGJIB")
 })
 
 app.listen(PORT, () => {

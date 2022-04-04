@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View menu</title>
+</head>
+<body>
+    <h1>Hansigjib</h1>
+    <table border="1">
+        <tr>
+            <th>img</th>
+            <th>name</th>
+            <th>description</th>
+            <th>price</th>
+            <th>tags</th>
+        </tr> 
+
+          <tr>
+              <tr>
+            <%- menu.map(menus => `<tr>
+                <td> <img src=${menus.img} alt ="img"></td>
+                <td>${menus.name}</td>
+                <td>${menus.description}</td>
+                               <td>${menus.description}</td>
+                <td>${menus.tags}</td>
+
+                       
+            </tr>`).join("");%>
+</tr>
+      
+    </table>
+</body>
+</html>
