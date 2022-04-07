@@ -5,7 +5,7 @@ const transactionSchema = new Schema({
     name: { type: String },
     quantity: {type: Number}, 
     price: { type: Number },
-    tags: [{ type: String }],
+    date: { type: Date}
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);
