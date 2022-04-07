@@ -3,13 +3,6 @@ const router = express.Router();
 const Menu = require('../models/Menu.js')
 const SeedMenu = require('../models/Seed')
 
-//// INDEX
-router.get("/", (req,res) => {
-    Menu.find({}, (err, menu) => {
-        console.log(menu)
-        res.render("index.ejs", {menu})
-    })
-});
 
 //// SEED
 router.get("/seed", async (req, res) => {
@@ -23,6 +16,16 @@ router.get("/seed", async (req, res) => {
     }
 })
 
+//// INDEX
+router.get("/", (req,res) => {
+    Menu.find()
+      .then(SeedMenu => {
+      res.json(SeedMenu)
+    })
+    .catch(err => {
+      res.json(err)
+    })
+});
 // //// CREATE
 // router.get("/menu", (req, res) => {
 
