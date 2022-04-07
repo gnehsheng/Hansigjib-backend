@@ -8,6 +8,17 @@ const { reset } = require("nodemon");
 
 const saltRounds = 10;
 
+//* see login form
+router.get("/", (req, res) => {
+     User.find()
+      .then(user => {
+      res.json(user)
+    })
+    .catch(err => {
+      res.json(err)
+    })
+});
+
 router.get("/seed", async (req, res) => {
     try {
         await User.deleteMany({})
@@ -31,12 +42,8 @@ router.get("/seed", async (req, res) => {
       }
 })
 
-//* see login form
-router.get("/form", (req, res) => {
-    res.render("login.ejs");
-});
-
-router.get("/secret", (req, res) => {
+//? secret
+router.get("/account", (req, res) => {
   const user = req.session.user;
 
   if (user) {
@@ -61,6 +68,23 @@ router.post("/login", async (req, res) => {
     }
 
 });
+
+router.post("/signup", async (req, res) => {
+    if (req.body.username && req.body.password) {
+      let newUser = {
+        username: req.body.username,
+        password: req.body.password
+      }
+      const user = await User.findOne ({username: req.body.username})
+      
+      if(user) {
+        return res.sendStatus(400).json({"message":"Username taken"})
+        
+      }
+      res.send({newUser})
+    }
+     
+})
 
 //logout route
 router.get('/logout', (req, res) =>{
