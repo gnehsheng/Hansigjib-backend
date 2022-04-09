@@ -76,7 +76,8 @@ router.post("/signup", async (req, res) => {
     if (req.body.username && req.body.password) {
       let newUser = {
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        name: req.body.name
       }
       const user = await User.findOne ({username: req.body.username})
       
