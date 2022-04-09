@@ -76,7 +76,7 @@ router.post("/signup", async (req, res) => {
     console.log("body", req.body)
   try {
     const createdUser = await User.create(req.body);
-    res.status(200).send(createdUser);
+    res.send(createdUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
   };  
