@@ -5,8 +5,13 @@ const bcrypt = require("bcrypt");
 const { Router, application } = require("express");
 const { reset } = require("nodemon");
 
-
-const saltRounds = 10;
+const isAuthenticated = (req, res, next) => {
+  if (req.session.currentUser) {
+    return next();
+  } else {
+    res.send("Sorry you have no access.")
+  }
+};
 
 //* see login form
 router.get("/", (req, res) => {
@@ -19,42 +24,9 @@ router.get("/", (req, res) => {
     })
 });
 
-router.get("/seed", async (req, res) => {
-  try {
-    await User.deleteMany({})
-    await User.create([
-      {
-        username: "admin@hansigjib.com",
-        password: bcrypt.hashSync("12345", saltRounds),
-        name: "admin"
-      },
-      {
-        username: "kitchen@hansigjib.com",
-        password: bcrypt.hashSync("12345", saltRounds),
-        name: "kitchen"
-      },
-      {
-        username: "server@hansigjib.com",
-        password: bcrypt.hashSync("12345", saltRounds),
-        name: "server"
-      },
-    ]);
-    res.send("Admin user seeded")
-  } catch (error) {
-    console.log(error);
-  }
-})
-
 //? secret
-router.get("/account", (req, res) => {
-  const user = req.session.user;
-
-  if (user) {
-
-    res.send(user)
-  } else {
-    res.send("Sorry you have no access.")
-  }
+router.get("/account", isAuthenticated, (req, res) => {
+  res.status(200).send('Success')
 })
 
 //Create
@@ -82,6 +54,7 @@ router.post("/login", async (req, res) => {
     // check user password with hashed password stored in the database
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (validPassword) {
+      req.session.currentUser = user
       res.status(200).json({ message: "Valid password" });
     } else {
       res.status(400).json({ error: "Invalid Password" });
