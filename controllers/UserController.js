@@ -73,20 +73,18 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-    if (req.body.username && req.body.password) {
-      let newUser = {
-        username: req.body.username,
-        password: req.body.password,
-        name: req.body.name
-      }
-      const user = await User.findOne ({username: req.body.username})
-      
-      if(user) {
-        return res.sendStatus(400).json({"message":"Username taken"})
-        
-      }
-      res.send({newUser})
-    }
+    console.log("body", req.body)
+  try {
+    const createdUser = await User.create(req.body);
+    res.status(200).send(createdUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  };  
+  //* save the data using moongoose into database
+
+  //Holiday.save(req.body);
+
+  //res.send();
      
 })
 
