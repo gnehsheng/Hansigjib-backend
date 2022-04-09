@@ -21,20 +21,22 @@ router.get("/", (req, res) => {
 
 router.get("/seed", async (req, res) => {
     try {
-        //await User.deleteMany({})
+        await User.deleteMany({})
         await User.create([
           {
-            username: "admin1234",
+            username: "admin@hansigjib.com",
             password: bcrypt.hashSync("12345", saltRounds),
-            date: Date.now()
+            name: "admin"
           },
           {
-            username: "kitchen123",
+            username: "kitchen@hansigjib.com",
             password: bcrypt.hashSync("12345", saltRounds),
+            name: "kitchen"
           },
            {
-            username: "server123",
+            username: "server@hansigjib.com",
             password: bcrypt.hashSync("12345", saltRounds),
+            name: "server"
           },
         ]);
         res.send("Admin user seeded")
