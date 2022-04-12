@@ -6,7 +6,7 @@ const { Router, application } = require("express");
 const { reset } = require("nodemon");
 
 const isAuthenticated = (req, res, next) => {
-  if (req.session.currentUser) {
+  if (req.session.isAuthenticated) {
     return next();
   } else {
     res.send("Sorry you have no access.")
@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
     // check user password with hashed password stored in the database
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (validPassword) {
-      req.session.currentUser = user
+      req.session.isAuthenticated = true
       res.status(200).json({ message: "Valid password" });
     } else {
       res.status(400).json({ error: "Invalid Password" });
