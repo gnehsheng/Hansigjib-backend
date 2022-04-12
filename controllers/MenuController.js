@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Menu = require('../models/Menu.js')
-const SeedMenu = require('../models/Seed')
+const SeedMenu = require('../models/SeedMenu')
 
 
 //// SEED

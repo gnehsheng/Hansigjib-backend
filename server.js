@@ -7,6 +7,7 @@ const MongoDBSession = require ('connect-mongodb-session')(session)
 const mongoose = require('mongoose')
 const UserController = require('./controllers/UserController')
 const MenuController = require('./controllers/MenuController')
+const TransactionController = require('./controllers/TransactionController')
 const methodOverride = require("method-override");
 
 
@@ -49,7 +50,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/user", UserController );
 app.use("/menu", MenuController );
-
+app.use("/transaction", TransactionController);
 app.get('/', (req, res) =>{
     
     console.log(req.session)
