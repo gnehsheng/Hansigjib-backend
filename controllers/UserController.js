@@ -9,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
   if (req.session.isAuthenticated) {
     return next();
   } else {
-    res.send("Sorry you have no access.")
+    res.status(200).send("Sorry you have no access.")
   }
 };
 
@@ -66,8 +66,8 @@ router.post("/login", async (req, res) => {
 
 
 //logout route
-router.get('/logout', (req, res) => {
-  req.sessions.destroy()
+router.post('/logout', (req, res) => {
+  req.session.destroy()
   res.send('logout')
 })
 

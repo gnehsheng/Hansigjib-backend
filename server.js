@@ -24,15 +24,14 @@ mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
 })
 
-const store = new MongoDBSession({
-    uri: MONGODB_URI,
-    collection: 'mySessions',
-})
-
 mongoose.connection.once("open", () => {
     console.log("connected to mongoose...");
 });
 
+const store = new MongoDBSession({
+    uri: MONGODB_URI,
+    collection: 'mySessions',
+})
 
 //Middleware
 app.use(morgan("tiny"))
@@ -52,7 +51,7 @@ app.use("/user", UserController );
 app.use("/menu", MenuController );
 
 app.get('/', (req, res) =>{
-    req.session.isAuthenticated = true
+    
     console.log(req.session)
     console.log(req.session.id)
     res.send("HANSIGJIB")
