@@ -51,6 +51,8 @@ app.use(express.json());
 app.use("/user", UserController );
 app.use("/menu", MenuController );
 app.use("/transaction", TransactionController);
+
+
 app.get('/', (req, res) =>{
     
     console.log(req.session)

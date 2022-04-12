@@ -9,8 +9,8 @@ router.get("/seed", async (req, res) => {
     try {
         await Menu.deleteMany({})
         await Menu.create(SeedMenu);
-        res.send("Seed")
-        res.redirect("/")
+        res.status(200).send("Menu Seeded")
+        //res.redirect("/")
     } catch (error) {
         console.log(error);
     }
@@ -26,13 +26,6 @@ router.get("/", (req,res) => {
       res.json(err)
     })
 });
-// //// CREATE
-// router.get("/menu", (req, res) => {
-
-//   const menu = new Menu(req.body)
-//   menu.save();
-//   res.send(req.body);
-// })
 
 
 module.exports = router;

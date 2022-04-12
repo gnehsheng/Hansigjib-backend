@@ -7,7 +7,7 @@ const { reset } = require("nodemon");
 
 const isAuthenticated = (req, res, next) => {
   if (req.session.isAuthenticated) {
-    return next();
+     next();
   } else {
     res.status(200).send("Sorry you have no access.")
   }
@@ -40,7 +40,7 @@ router.post("/signup", async (req, res) => {
     const user = await User.create(req.body);
     const salt = await bcrypt.genSalt(10)
     user.password = await bcrypt.hash(user.password, salt)
-    user.save().then(() => res.status(200).send('Success'))
+    user.save().then(() => res.status(200).send('Success'));
   } catch (error) {
     res.status(400).json({ error: error.message });
   };
@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
 //logout route
 router.post('/logout', (req, res) => {
   req.session.destroy()
-  res.send('logout')
+  res.status(200).send('You are logged out.')
 })
 
 module.exports = router;

@@ -8,8 +8,8 @@ router.get("/seed", async (req, res) => {
     try {
         await Transaction.deleteMany({})
         await Transaction.create(SeedTransaction);
-        res.send("Seed")
-        res.redirect("/")
+        res.status(200).send("Seed")
+        //res.redirect("/")
     } catch (error) {
         console.log(error);
     }
