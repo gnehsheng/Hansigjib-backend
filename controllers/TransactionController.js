@@ -26,4 +26,16 @@ router.get("/", (req,res) => {
     })
 });
 
+
+//Create
+router.post("/create", async (req, res) => {
+
+  try {
+    const transaction = await Transaction.create(req.body);
+    transaction.save().then(() => res.status(200).send('Success'));
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  };
+})
+
 module.exports = router;
