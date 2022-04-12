@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const { Router, application } = require("express");
 const { reset } = require("nodemon");
 
-
-
 const isAuthenticated = (req, res, next) => {
   if (req.session.currentUser) {
     return next();
@@ -33,9 +31,9 @@ router.get("/account", isAuthenticated, (req, res) => {
 
 //Create
 router.post("/signup", async (req, res) => {
-  const {body} = req.body
+  const body = req.body
 
-  if (!(body.username && body.email)) {
+  if (!(body.username && body.password)) {
     return res.status(400).send({ error: error.message })
   }
   try {
@@ -46,8 +44,6 @@ router.post("/signup", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   };
-
- 
 })
 
 //* login route
