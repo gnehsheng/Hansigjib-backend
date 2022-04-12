@@ -1,12 +1,14 @@
 require('dotenv').config()
 const express = require('express')
+const session = require('express-session')
 const morgan = require("morgan");
 const cors = require('cors')
+const MongoDBSession = require ('connect-mongodb-session')(session)
 const mongoose = require('mongoose')
 const UserController = require('./controllers/UserController')
 const MenuController = require('./controllers/MenuController')
 const methodOverride = require("method-override");
-const session = require('express-session')
+
 
 const app = express()
 const PORT = process.env.PORT ?? 2000
@@ -20,7 +22,13 @@ mongoose.connection.on("disconnected", () => console.log("mongo disconnected"));
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
-});
+})
+
+const store = new MongoDBSession({
+    uri: MONGODB_URI,
+    collection: 'mySessions',
+})
+
 mongoose.connection.once("open", () => {
     console.log("connected to mongoose...");
 });
@@ -30,9 +38,10 @@ mongoose.connection.once("open", () => {
 app.use(morgan("tiny"))
 app.use(
     session({
-        secret: process.env.SECRET, //a random string do not copy this value or your stuff will get hacked
-        resave: false, // default more info: https://www.npmjs.com/package/express-session#resave
-        saveUninitialized: false, // default  more info: https://www.npmjs.com/package/express-session#resave
+        secret: process.env.SECRET,
+        resave: false, 
+        saveUninitialized: false,
+        store: store
     })
 );
 app.use(express.urlencoded({ extended: false }));
@@ -43,6 +52,9 @@ app.use("/user", UserController );
 app.use("/menu", MenuController );
 
 app.get('/', (req, res) =>{
+    req.session.isAuthenticated = true
+    console.log(req.session)
+    console.log(req.session.id)
     res.send("HANSIGJIB")
 })
 
