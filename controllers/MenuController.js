@@ -5,9 +5,9 @@ const SeedMenu = require('../models/SeedMenu')
 
 const isAuthenticated = (req, res, next) => {
   if (req.session.username) {
-    return next();
+   next();
   } else {
-    res.redirect("/sessions/new");
+    res.status(200).send("no entry")
   }
 };
 
