@@ -44,7 +44,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true
 }
@@ -54,14 +53,12 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.use(
     session({
-        key: "username",
+        //key: "username",
         secret: process.env.SECRET,
         resave: false, 
         saveUninitialized: false,
-       // store: store,
-        cookie: {
-            expires: 60 * 60,
-        }
+        store: store,
+        // cookie: { expires: 60 * 60, }
     })
 );
 app.use("/user", UserController );
