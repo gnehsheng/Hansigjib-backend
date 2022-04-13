@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const { Router, application } = require("express");
 const { reset } = require("nodemon");
+const { BrowserRouter } = require("react-router-dom");
 
 const isAuthenticated = (req, res, next) => {
   if (req.session.isAuthenticated) {
@@ -46,7 +47,7 @@ router.post("/signup", async (req, res) => {
   };
 })
 
-route.get("login", (req, res) => {
+router.get("login", (req, res) => {
   if(req.session.username) {
     res.status(200).send({loggedIn : true, username: req.session.username})
   } else {
