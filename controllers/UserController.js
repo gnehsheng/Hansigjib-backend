@@ -47,11 +47,11 @@ router.post("/signup", async (req, res) => {
   };
 })
 
-router.get("login", (req, res) => {
+router.get("/login", (req, res) => {
   if(req.session.username) {
     res.status(200).send({loggedIn : true, username: req.session.username})
   } else {
-    rse.status(200).send({loggedIn: false})
+    res.status(200).send({loggedIn: false})
   }
 })
 
