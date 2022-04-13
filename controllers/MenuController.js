@@ -3,13 +3,13 @@ const router = express.Router();
 const Menu = require('../models/Menu.js')
 const SeedMenu = require('../models/SeedMenu')
 
-const isAuthenticated = (req, res, next) => {
-  if (req.session.username) {
-   next();
-  } else {
-    res.status(200).send("no entry")
-  }
-};
+// const isAuthenticated = (req, res, next) => {
+//   if (req.session.username) {
+//    next();
+//   } else {
+//     res.status(200).send("no entry")
+//   }
+// };
 
 //// SEED
 router.get("/seed", async (req, res) => {
@@ -24,7 +24,7 @@ router.get("/seed", async (req, res) => {
 })
 
 //// INDEX
-router.get("/", isAuthenticated, (req,res) => {
+router.get("/", (req,res) => {
   
     Menu.find()
       .then(SeedMenu => {
