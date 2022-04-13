@@ -46,6 +46,14 @@ router.post("/signup", async (req, res) => {
   };
 })
 
+route.get("login", (req, res) => {
+  if(req.session.username) {
+    res.status(200).send({loggedIn : true, username: req.session.username})
+  } else {
+    rse.status(200).send({loggedIn: false})
+  }
+})
+
 //* login route
 router.post("/login", async (req, res) => {
   const body = req.body;

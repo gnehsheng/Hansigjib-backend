@@ -1,8 +1,12 @@
 require('dotenv').config()
 const express = require('express')
-const session = require('express-session')
 const morgan = require("morgan");
+
 const cors = require('cors')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+
 const MongoDBSession = require ('connect-mongodb-session')(session)
 const mongoose = require('mongoose')
 const UserController = require('./controllers/UserController')
@@ -36,18 +40,30 @@ const store = new MongoDBSession({
 
 //Middleware
 app.use(morgan("tiny"))
+app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"));
+app.use(express.json());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+}
+));
+app.use(cookieParser())
+app.use(bodyParser.urlencoded({extended: true}))
+
 app.use(
     session({
+        key: "username",
         secret: process.env.SECRET,
         resave: false, 
         saveUninitialized: false,
-        store: store
+       // store: store,
+        cookie: {
+            expires: 60 * 60,
+        }
     })
 );
-app.use(express.urlencoded({ extended: false }));
-app.use(methodOverride("_method"));
-app.use(cors());
-app.use(express.json());
 app.use("/user", UserController );
 app.use("/menu", MenuController );
 app.use("/transaction", TransactionController);
