@@ -35,22 +35,25 @@ mongoose.connection.once("open", () => {
 // })
 
 //Middleware
+app.set("trust proxy", 1);
+
 app.use(morgan("tiny"))
 app.use(
     session({
         secret: process.env.SECRET,
         resave: false, 
         saveUninitialized: false,
-        //store: store
+        cookie: {
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production", },
     })
 );
-//app.use(express.urlencoded({ extended: false }));
-//app.use(methodOverride("_method"));
+
 app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: true,
+    origin: ["http://localhost:3000", "https://hansigjib-restaurant.vercel.app/"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
