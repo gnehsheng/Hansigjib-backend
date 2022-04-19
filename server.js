@@ -60,7 +60,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: true,
+    origin: ["http://localhost:3000", "https://hansigjib-restaurant.vercel.app/"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
