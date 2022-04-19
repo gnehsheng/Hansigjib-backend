@@ -44,12 +44,20 @@ router.post("/create", async (req, res) => {
   
     res.status(200).json({'message': 'Success', 'transaction_id': transaction._id.toString()})
     
-    
-
-
   } catch (error) {
     res.status(400).json({ error: error.message });
   };
 })
+
+router.get("/:id", (req, res) => {
+  Transaction.findById(req.params.id)
+    .then(transaction => {
+    res.json(transaction)
+  })
+  .catch(err => {
+    res.json(err)
+  })
+})
+
 
 module.exports = router;
