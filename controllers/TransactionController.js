@@ -18,21 +18,20 @@ router.get("/seed", async (req, res) => {
 
 //// INDEX
 router.get("/", (req, res) => {
-  // Transaction.find()
-  //   .then(SeedTransaction => {
-  //   res.json(SeedTransaction)
-  // })
-  // .catch(err => {
-  //   res.json(err)
-  // })
-  res.status(200).send('Success')
+  Transaction.find()
+    .then(transaction => {
+    res.json(transaction)
+  })
+  .catch(err => {
+    res.json(err)
+  })
+  // res.status(200).send('Success')
 });
 
 
 //Create
 router.post("/create", async (req, res) => {
   try {
-
     let newTransaction = []
     req.body.items.map(async (el) => {
       const { name, price, quantity, itemTotal } = el
@@ -40,10 +39,12 @@ router.post("/create", async (req, res) => {
     })
     
     const transaction = await Transaction.create({transactions: newTransaction})
-
+    
     transaction.save()
-    res.status(200).send('Success')
-
+  
+    res.status(200).json({'message': 'Success', 'transaction_id': transaction._id.toString()})
+    
+    
 
 
   } catch (error) {
