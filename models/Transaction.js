@@ -8,10 +8,11 @@ const subSchema = new Schema({
         itemTotal: {type: Number},
 });
 
-const transactionSchema = new Schema({
-    transactions: [subSchema]
-})
+// const transactionSchema = new Schema({
+//     transactions: [subSchema]
+// })
 
-const Transaction = mongoose.model("Transaction", transactionSchema);
+// const Transaction = mongoose.model("Transaction", transactionSchema);
 
+const Transaction = mongoose.model("Transaction", subSchema);
 module.exports = Transaction;

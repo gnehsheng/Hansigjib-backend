@@ -17,16 +17,16 @@ const MONGODB_URI = process.env.MONGODB_URI ?? 'localhost:2000'
 
 // Error / Disconnection
 mongoose.connection.on("error", (err) =>
-    console.log(err.message + " is Mongod not running?")
+  console.log(err.message + " is Mongod not running?")
 );
 mongoose.connection.on("disconnected", () => console.log("mongo disconnected"));
 
 mongoose.connect(MONGODB_URI, {
-    useNewUrlParser: true,
+  useNewUrlParser: true,
 })
 
 mongoose.connection.once("open", () => {
-    console.log("connected to mongoose...");
+  console.log("connected to mongoose...");
 });
 
 // const store = new MongoDBSession({
@@ -39,14 +39,15 @@ app.set("trust proxy", 1);
 
 app.use(morgan("tiny"))
 app.use(
-    session({
-        secret: process.env.SECRET,
-        resave: false, 
-        saveUninitialized: false,
-        cookie: {
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        secure: process.env.NODE_ENV === "production", },
-    })
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
+  })
 );
 
 app.use(express.json());
@@ -57,7 +58,7 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header('Content-Type', 'application/json;charset=UTF-8')
   res.header('Access-Control-Allow-Credentials', true)
   res.header(
@@ -67,24 +68,24 @@ app.use(function(req, res, next) {
   next()
 })
 
-app.use("/user", UserController );
-app.use("/menu", MenuController );
+app.use("/user", UserController);
+app.use("/menu", MenuController);
 app.use("/transaction", TransactionController);
 
 
-app.get('/', (req, res) =>{
-    
-    // req.session.user = "session user"
-    // console.log(req.session)
-    // console.log(req.session.id)
-    res.send("HANSIGJIB")
+app.get('/', (req, res) => {
+
+  // req.session.user = "session user"
+  // console.log(req.session)
+  // console.log(req.session.id)
+  res.send("HANSIGJIB")
 })
 
-app.get("/auth", function(req, res){
+app.get("/auth", function (req, res) {
 
   res.cookie('token', 'someauthtoken')
-  res.json({id: 2});
+  res.json({ id: 2 });
 });
 app.listen(PORT, () => {
-    console.log(`running on port ${PORT}`)
+  console.log(`running on port ${PORT}`)
 })
