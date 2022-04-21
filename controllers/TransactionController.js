@@ -21,11 +21,11 @@ router.get("/seed", async (req, res) => {
 router.get("/", (req, res) => {
   Transaction.find()
     .then(transaction => {
-    res.json(transaction)
-  })
-  .catch(err => {
-    res.json(err)
-  })
+      res.json(transaction)
+    })
+    .catch(err => {
+      res.json(err)
+    })
   // res.status(200).send('Success')
 });
 
@@ -38,34 +38,41 @@ router.post("/create", async (req, res) => {
       const { name, price, quantity, itemTotal } = el
       newTransaction.push({ name, price, quantity, itemTotal })
     })
-    
-    const transaction = await Transaction.create({transactions: newTransaction})
-    
+
+    const transaction = await Transaction.create({ transactions: newTransaction })
+
     transaction.save()
-  
-    res.status(200).json({'message': 'Success', 'transaction_id': transaction._id.toString()})
-    
+
+    res.status(200).json({ 'message': 'Success', 'transaction_id': transaction._id.toString() })
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   };
 })
 
 router.post("/userTransaction", async (req, res) => {
+  console.log(req.session)
+  console.log( 'finding user', req.session.user)
   try {
     let userTransaction = []
 
     req.body.items.map(async (el) => {
-      const { name, price, quantity, itemTotal} = el
-      userTransaction.push({name, price, quantity, itemTotal})
+      const { name, price, quantity, itemTotal } = el
+      userTransaction.push({ name, price, quantity, itemTotal })
     })
-    
-    const userTrans = await Transaction.create({transactions: userTransaction})
-    console.log(req.body)
-    User.findOne({username: req.body.username}).populate("userTransaction")
-    userTrans.save()
 
-     res.status(200).json({'message': 'Success', 'transaction_id': transaction._id.toString()})
-    
+    // const userTrans = await Transaction.create({ transactions: userTransaction })
+  
+    const result = await User.findOneAndUpdate(
+     
+      { username: req.session.user },
+      { $push: { userTransaction: userTransaction } },
+    )
+    // userTrans.save()
+    console.log(result)
+
+    res.status(200).json({ 'message': 'Success', 'transaction_id': transaction._id.toString() })
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -74,11 +81,11 @@ router.post("/userTransaction", async (req, res) => {
 router.get("/:id", (req, res) => {
   Transaction.findById(req.params.id)
     .then(transaction => {
-    res.json(transaction)
-  })
-  .catch(err => {
-    res.json(err)
-  })
+      res.json(transaction)
+    })
+    .catch(err => {
+      res.json(err)
+    })
 })
 
 
