@@ -40,7 +40,6 @@ router.post("/create", async (req, res) => {
     })
 
     const transaction = await Transaction.create({ transactions: newTransaction })
-
     transaction.save()
 
     res.status(200).json({ 'message': 'Success', 'transaction_id': transaction._id.toString() })
@@ -60,13 +59,13 @@ router.post("/userTransaction", async (req, res) => {
       const { name, price, quantity, itemTotal } = el
       userTransaction.push({ name, price, quantity, itemTotal })
     })
+    console.log(userTransaction)
 
     // const userTrans = await Transaction.create({ transactions: userTransaction })
   
     const result = await User.findOneAndUpdate(
-     
       { username: req.session.user },
-      { $push: { userTransaction: userTransaction } },
+      { $push: { userTransaction: req.body.items } },
     )
     // userTrans.save()
     console.log(result)
