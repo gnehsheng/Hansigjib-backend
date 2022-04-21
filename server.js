@@ -13,7 +13,7 @@ const methodOverride = require("method-override");
 
 const app = express()
 const PORT = process.env.PORT ?? 2000
-const MONGODB_URI = process.env.MONGODB_URI ?? 'localhost:2000'
+const MONGODB_URI = process.env.MONGODB_URI
 
 // Error / Disconnection
 mongoose.connection.on("error", (err) =>
@@ -57,15 +57,6 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
-app.use(function(req, res, next) {
-  res.header('Content-Type', 'application/json;charset=UTF-8')
-  res.header('Access-Control-Allow-Credentials', true)
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  next()
-})
 
 app.use("/user", UserController );
 app.use("/menu", MenuController );
