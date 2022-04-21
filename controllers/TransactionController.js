@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Transaction = require('../models/Transaction.js')
-const User = require('../models/User')
 const SeedTransaction = require('../models/SeedTransaction')
 // const TransactionCollection = require('../models/Transaction2')
 
@@ -9,7 +8,7 @@ const SeedTransaction = require('../models/SeedTransaction')
 router.get("/seed", async (req, res) => {
   try {
     await Transaction.deleteMany({})
-    //await Transaction.create(SeedTransaction);
+    await Transaction.create(SeedTransaction);
     res.status(200).send("Seed")
     //res.redirect("/")
   } catch (error) {
@@ -48,27 +47,6 @@ router.post("/create", async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   };
-})
-
-router.post("/userTransaction", async (req, res) => {
-  try {
-    let userTransaction = []
-
-    req.body.items.map(async (el) => {
-      const { name, price, quantity, itemTotal} = el
-      userTransaction.push({name, price, quantity, itemTotal})
-    })
-    
-    const userTrans = await Transaction.create({transactions: userTransaction})
-    console.log(req.body)
-    User.findOne({username: req.body.username}).populate("userTransaction")
-    userTrans.save()
-
-     res.status(200).json({'message': 'Success', 'transaction_id': transaction._id.toString()})
-    
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
 })
 
 router.get("/:id", (req, res) => {
