@@ -12,6 +12,8 @@ const transactionSchema = new Schema({
     transactions: [itemSchema]
 })
 
-const Transaction = mongoose.model("Transaction", transactionSchema);
 
+// const Transaction = mongoose.model("Transaction", transactionSchema);
+
+const Transaction = mongoose.model("Transaction", subSchema);
 module.exports = Transaction;

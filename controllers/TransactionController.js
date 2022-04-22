@@ -26,6 +26,7 @@ router.get("/", (req, res) => {
     .catch((err) => {
       res.json(err);
     });
+
   // res.status(200).send('Success')
 });
 
@@ -34,6 +35,7 @@ router.post("/create", async (req, res) => {
   try {
     let newTransaction = [];
     req.body.items.map(async (el) => {
+
       const { name, price, quantity, itemTotal } = el;
       newTransaction.push({ name, price, quantity, itemTotal });
     });
@@ -53,10 +55,13 @@ router.post("/create", async (req, res) => {
 });
 
 router.post("/userTransaction", async (req, res) => {
+  console.log(req.session)
+  console.log( 'finding user', req.session.user)
   try {
     let userTransaction = [];
 
     req.body.items.map(async (el) => {
+
       const { name, price, quantity, itemTotal } = el;
       userTransaction.push({ name, price, quantity, itemTotal });
     });
@@ -71,6 +76,7 @@ router.post("/userTransaction", async (req, res) => {
     );
 
     res.status(200).json({ message: "Success" });
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -85,5 +91,6 @@ router.get("/:id", (req, res) => {
       res.json(err);
     });
 });
+
 
 module.exports = router;

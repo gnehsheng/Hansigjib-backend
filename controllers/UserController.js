@@ -49,7 +49,7 @@ router.post("/signup", async (req, res) => {
 //* login route
 router.post("/login", async (req, res) => {
   const body = req.body;
-  console.log("body", body)
+  
   const user = await User.findOne({ username: body.username });
   if (user) {
     // check user password with hashed password stored in the database
@@ -57,6 +57,7 @@ router.post("/login", async (req, res) => {
     if (validPassword) {
       req.session.isAuthenticated = true
       req.session.username = user.username
+
       //res.cookie('name', user.username, {httpOnly: false})
       res.status(200).json({ message: "Valid password" });
     } else {
