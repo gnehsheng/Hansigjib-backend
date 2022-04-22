@@ -56,8 +56,8 @@ router.post("/login", async (req, res) => {
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (validPassword) {
       req.session.isAuthenticated = true
-      req.session.user = user.username
-      
+      req.session.username = user.username
+
       //res.cookie('name', user.username, {httpOnly: false})
       res.status(200).json({ message: "Valid password" });
     } else {
