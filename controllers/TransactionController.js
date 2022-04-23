@@ -56,7 +56,7 @@ router.post("/create", async (req, res) => {
 
 router.post("/userTransaction", async (req, res) => {
   console.log(req.session)
-  console.log( 'finding user', req.session.user)
+  console.log('finding user', req.session.username)
   try {
     let userTransaction = [];
 
@@ -72,10 +72,10 @@ router.post("/userTransaction", async (req, res) => {
 
     const result = await User.findOneAndUpdate(
       { username: req.session.user },
-      { $push: { userTransaction: itemTransaction.id } }
+      { $push: { userTransaction: itemTransaction.id, timestamps: { createdAt: true} } }
     );
 
-    res.status(200).json({ message: "Success" });
+    res.status(200).json({ 'message': 'Success', 'transaction_id': itemTransaction.id.toString() })
 
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -83,9 +83,10 @@ router.post("/userTransaction", async (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+  console.log('finding transaction id', req.params.id)
   Transaction.findById(req.params.id)
     .then((transaction) => {
-      res.json(transaction);
+      res.send(transaction);
     })
     .catch((err) => {
       res.json(err);

@@ -6,8 +6,9 @@ const { Router, application } = require("express");
 const { reset } = require("nodemon");
 
 const isAuthenticated = (req, res, next) => {
+
   if (req.session.isAuthenticated) {
-     next();
+    next();
   } else {
     res.status(200).send("Sorry you have no access.")
   }
@@ -25,8 +26,15 @@ router.get("/", (req, res) => {
 });
 
 //? secret
-router.get("/account", isAuthenticated, (req, res) => {
-  res.status(200).send('Success')
+router.get("/account", isAuthenticated, async (req, res) => {
+  const currentUser = req.session.username;
+  try {
+    const userData = await User.findOne({ username: currentUser })
+    res.status(200).send(userData)
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+
+  }
 })
 
 //Create
@@ -46,10 +54,10 @@ router.post("/signup", async (req, res) => {
   };
 })
 
-//* login route
+//* login routes
 router.post("/login", async (req, res) => {
   const body = req.body;
-  
+
   const user = await User.findOne({ username: body.username });
   if (user) {
     // check user password with hashed password stored in the database
@@ -59,7 +67,7 @@ router.post("/login", async (req, res) => {
       req.session.username = user.username
 
       //res.cookie('name', user.username, {httpOnly: false})
-      res.status(200).json({ message: "Valid password" });
+      res.status(200).json(user);
     } else {
       res.status(400).json({ error: "Invalid Password" });
     }
@@ -73,6 +81,45 @@ router.post("/login", async (req, res) => {
 router.post('/logout', (req, res) => {
   req.session.destroy()
   res.status(200).send('You are logged out.')
+})
+
+router.delete("/delete", async (req, res) => {
+  try {
+    await User.findOneAndDelete({ username: req.session.username })
+    //res.redirect("/signup")
+    req.session.destroy()
+    res.status(200).clearCookie("notcookie").send('Deleted User')
+  }
+  catch (error) {
+    res.send(501)
+  }
+})
+
+router.put("/update", async (req, res) => {
+  try {
+    
+    const update = {
+      name: req.body.name,
+      password: await bcrypt.hash(req.body.password,10)
+    }
+    
+    // console.log('looking for session', req.session)
+    const filter = { username: req.session.username }
+    console.log('filter', filter)
+    // console.log(filter)
+    const updatedUser = await User.findOneAndUpdate(filter, update, {new: true})
+    console.log('updateduser', updatedUser)
+      // .then((res) => {
+      //   if (req.session.username) {
+      //     return res.status(400).send({ error: error.message })
+      //   }
+      //   res.status(200).json(updatedUser);
+      // }
+      res.status(200).json(updatedUser)
+  }
+  catch (error) {
+    res.status(500).send(error.message)
+  }
 })
 
 module.exports = router;
