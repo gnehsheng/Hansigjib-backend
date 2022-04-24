@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
 router.get("/account", isAuthenticated, async (req, res) => {
   const currentUser = req.session.username;
   try {
-    const userData = await User.findOne({ username: currentUser })
+    const userData = await User.findOne({ username: currentUser }).populate('userTransaction')
     res.status(200).send(userData)
   } catch (error) {
     res.status(400).send({ error: error.message });

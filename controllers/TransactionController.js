@@ -59,7 +59,7 @@ router.post("/userTransaction", async (req, res) => {
   console.log('finding user', req.session.username)
   try {
     let userTransaction = [];
-
+console.log(req.body)
     req.body.items.map(async (el) => {
 
       const { name, price, quantity, itemTotal } = el;
@@ -70,11 +70,11 @@ router.post("/userTransaction", async (req, res) => {
       transactions: userTransaction,
     });
 
-    const result = await User.findOneAndUpdate(
-      { username: req.session.user },
+    await User.findOneAndUpdate(
+      { username: req.session.username },
       { $push: { userTransaction: itemTransaction.id, timestamps: { createdAt: true} } }
     );
-
+console.log('itemtransaction', itemTransaction)
     res.status(200).json({ 'message': 'Success', 'transaction_id': itemTransaction.id.toString() })
 
   } catch (error) {
